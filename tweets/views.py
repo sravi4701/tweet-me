@@ -1,8 +1,15 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Tweet
+from .forms import TweetModelForm
 
-
+class TweetCreateView(CreateView):
+	form_class = TweetModelForm
+	template_name = "tweets/create_view.html"
+	success_url = "/tweet/create/"
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		return super(TweetCreateView, self).form_valid(form)
 
 class TweetListView(ListView):
 	queryset = Tweet.objects.all()
