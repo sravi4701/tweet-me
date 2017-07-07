@@ -5,17 +5,23 @@ from django.forms.utils import ErrorList
 from .models import Tweet
 from .forms import TweetModelForm
 
-class TweetCreateView(CreateView):
+from .mixins import FormUserRequiredMixin
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+
+class TweetCreateView(LoginRequiredMixin, FormUserRequiredMixin, CreateView):
 	form_class = TweetModelForm
 	template_name = "tweets/create_view.html"
 	success_url = "/tweet/create/"
-	def form_valid(self, form):
-		if self.request.user.is_authenticated():
-			form.instance.user = self.request.user
-			return super(TweetCreateView, self).form_valid(form)
-		else:
-			form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["User must be logged in to continue"])
-			return self.form_invalid(form)
+	login_url = "/admin/"
+	# def form_valid(self, form):
+	# 	if self.request.user.is_authenticated():
+	# 		form.instance.user = self.request.user
+	# 		return super(TweetCreateView, self).form_valid(form)
+	# 	else:
+	# 		form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["User must be logged in to continue"])
+	# 		return self.form_invalid(form)
 
 class TweetListView(ListView):
 	queryset = Tweet.objects.all()
