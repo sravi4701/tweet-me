@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 
 
 class TweetDeleteView(DeleteView, LoginRequiredMixin):
-	models = Tweet
+	model = Tweet
 	template_name = "tweets/delete_confirm.html"
 	success_url = reverse_lazy("list")
 

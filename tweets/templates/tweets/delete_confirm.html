@@ -1,2 +1,5 @@
-Are you sure want to delete this post ?
-<button>Delete</button>
+Are you sure want to delete {{object.content}}
+<form action="" method="POST">{% csrf_token %}
+
+<input type="submit" value="Confirm">
+</form>
