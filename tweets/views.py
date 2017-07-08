@@ -1,13 +1,20 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django import forms
 from django.forms.utils import ErrorList
 from .models import Tweet
 from .forms import TweetModelForm
-
 from .mixins import FormUserRequiredMixin
-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
+
+class TweetDeleteView(DeleteView, LoginRequiredMixin):
+	models = Tweet
+	template_name = "tweets/delete_confirm.html"
+	success_url = reverse_lazy("list")
+
+
 
 class TweetUpdateView(LoginRequiredMixin, UpdateView):
 	queryset = Tweet.objects.all()
