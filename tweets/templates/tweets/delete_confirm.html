@@ -1,5 +1,13 @@
-Are you sure want to delete {{object.content}}
-<form action="" method="POST">{% csrf_token %}
 
-<input type="submit" value="Confirm">
-</form>
+{% extends "base.html" %}
+
+{%block title%}Delete confirm {{ block.super }}{% endblock %}
+
+{% block content %}
+    Are you sure want to delete {{object.content}}
+	<form action="" method="POST">{% csrf_token %}
+
+	<input type="submit" value="Confirm">
+	</form>
+
+{% endblock content %}

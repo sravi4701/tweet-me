@@ -5,7 +5,7 @@ class FormUserRequiredMixin(object):
 	def form_valid(self, form):
 		if self.request.user.is_authenticated():
 			form.instance.user = self.request.user
-			return super(TweetCreateView, self).form_valid(form)
+			return super(FormUserRequiredMixin, self).form_valid(form)
 		else:
 			form.errors[forms.forms.NON_FIELD_ERRORS] = ErrorList(["User must be logged in to continue"])
 			return self.form_invalid(form)

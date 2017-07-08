@@ -1,7 +1,14 @@
-{% include "tweets/tweet_search.html" %} <br>
+{% extends "base.html" %}
 
-<ul>
-	{% for obj in object_list %}
-		<li><a href="#">{{obj.content}}</a></li>
-	{% endfor %}
-</ul>
+{%block title%}Home {{ block.super }}{% endblock %}
+
+{% block content %}
+	{% include "tweets/tweet_search.html" %} <br>
+
+	<ul>
+		{% for obj in object_list %}
+			<li><a href="{% url 'tweet:detail' pk=obj.pk %}">{{obj.content}}</a></li>
+		{% endfor %}
+	</ul>
+
+{% endblock content %}
