@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django import forms
 from django.forms.utils import ErrorList
 from .models import Tweet
@@ -8,6 +8,12 @@ from .forms import TweetModelForm
 from .mixins import FormUserRequiredMixin
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+
+class TweetUpdateView(LoginRequiredMixin, UpdateView):
+	queryset = Tweet.objects.all()
+	form_class = TweetModelForm
+	template_name = "tweets/update_view.html"
+	success_url = "/tweet/"
 
 
 class TweetCreateView(LoginRequiredMixin, FormUserRequiredMixin, CreateView):
