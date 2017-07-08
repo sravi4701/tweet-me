@@ -12,8 +12,7 @@ from django.urls import reverse_lazy
 class TweetDeleteView(DeleteView, LoginRequiredMixin):
 	model = Tweet
 	template_name = "tweets/delete_confirm.html"
-	success_url = reverse_lazy("list")
-
+	success_url = reverse_lazy("tweet:list")
 
 
 class TweetUpdateView(LoginRequiredMixin, UpdateView):
@@ -37,12 +36,18 @@ class TweetCreateView(LoginRequiredMixin, FormUserRequiredMixin, CreateView):
 	# 		return self.form_invalid(form)
 
 class TweetListView(ListView):
-	queryset = Tweet.objects.all()
 	template_name = "tweets/list_view.html"
 	def get_context_data(self, *args, **kwargs):
 		context = super(TweetListView, self).get_context_data(*args, **kwargs)
 		print(context)
 		return context
+	def get_queryset(self, *args, **kwargs):
+		queryset = Tweet.objects.all()
+		q = self.request.GET.get("q")
+		print("q" + str(q))
+		if(q is not None):
+			queryset = Tweet.objects.filter(content__icontains=q)
+		return queryset
 
 class TweetDetailView(DetailView):
 	template_name = "tweets/detail_view.html"
