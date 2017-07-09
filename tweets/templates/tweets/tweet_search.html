@@ -1,3 +1,8 @@
-<form action="{% url 'tweet:list' %}" method="GET">
-	<input type="text" name="q" value="{{ request.GET.q }}">
-</form>
+<form action="{% url 'tweet:list' %}" method="GET" class="navbar-form navbar-left">
+	<div class="form-group">
+<!-- 		<label for="input1">Search</label>
+ -->		
+ <input type="text" id="input1" class="form-control"name="q" value="{{ request.GET.q }}" placeholder="query">
+	</div>
+	<input type="submit" class="btn btn-primary"value="Submit">
+</form>		
