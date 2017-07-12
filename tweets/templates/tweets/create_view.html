@@ -3,9 +3,14 @@
 {%block title%}Create {{ block.super }}{% endblock %}
 
 {% block content %}
-	<form class="form" action="" method="POST">
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3">
+		<h1>Create Tweet</h1>
+			<form class="form" action="" method="POST">
 		{% csrf_token %}
 		{{form.as_p}}
-		<input type="submit" value="Tweet">
-	</form>
+		<input type="submit" value="Tweet" class="btn btn-primary">
+	</form>	
+		</div>
+	</div>
 {% endblock content %}

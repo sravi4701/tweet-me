@@ -25,7 +25,6 @@ class TweetUpdateView(LoginRequiredMixin, UpdateView):
 class TweetCreateView(LoginRequiredMixin, FormUserRequiredMixin, CreateView):
 	form_class = TweetModelForm
 	template_name = "tweets/create_view.html"
-	success_url = "/tweet/create/"
 	login_url = "/admin/"
 	# def form_valid(self, form):
 	# 	if self.request.user.is_authenticated():
@@ -37,10 +36,14 @@ class TweetCreateView(LoginRequiredMixin, FormUserRequiredMixin, CreateView):
 
 class TweetListView(ListView):
 	template_name = "tweets/list_view.html"
+	
 	def get_context_data(self, *args, **kwargs):
 		context = super(TweetListView, self).get_context_data(*args, **kwargs)
-		print(context)
+		context["create_form"] = TweetModelForm()
+		context["create_url"] = reverse_lazy("tweet:create")
+		# print(context)
 		return context
+
 	def get_queryset(self, *args, **kwargs):
 		queryset = Tweet.objects.all()
 		q = self.request.GET.get("q")
