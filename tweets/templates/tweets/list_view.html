@@ -2,7 +2,41 @@
 
 {%block title%}Home {{ block.super }}{% endblock %}
 
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			$.ajax({
+				url:"/api/tweet",
+				method: "GET",
+				success: function(data){
+					// console.log(data);
+					$.each(data, function(key, value){
+						var tweetContent = value.content;
+						var tweetUser = value.user;
+						var tweetKey = key;
+						// console.log(key);
+						// console.log(value.user.username);
+						// console.log(value.content);
+						$("#tweet-container").append(
+								"<li>" + tweetContent + "<br>"  + tweetUser.username  + " | <a href=\"#\">View</a>" + "</li>"
+							)
+					})
+				},
+				error : function(data){
+					console.log("Error");
+					console.log(data);
+				}
+
+			})
+		});
+
+	</script>
+{% endblock script %}
+
 {% block content %}
+	<div id="tweet-container">
+		
+	</div>
 	<div class="row">
 		<div class="col-sm-3 col-xs-12" style="background-color: red;">
 			<h1>{{ request.user }}</h1>
