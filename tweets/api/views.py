@@ -2,6 +2,13 @@ from rest_framework import generics
 from django.db.models import Q
 from .serializers import TweetModelSerializer
 from tweets.models import Tweet
+
+class TweetCreateAPIView(generics.CreateAPIView):
+	serializer_class = TweetModelSerializer
+
+	def perform_create(self, serializer):
+		serializer.save(user=self.request.user)
+
 class TweetListAPIView(generics.ListAPIView):
 	serializer_class = TweetModelSerializer
 	def get_queryset(self):
