@@ -13,5 +13,4 @@ class TweetListAPIView(generics.ListAPIView):
 					Q(content__icontains=query) |
 					Q(user__username__icontains=query)
 				)
-
 		return qs
