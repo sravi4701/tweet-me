@@ -3,13 +3,30 @@
 {%block title%}Home {{ block.super }}{% endblock %}
 {% block script %}
 	<script>
+		function getParameterByName(name, url){
+			if(!url){
+				url = window.location.href;
+			}
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^$#]*)|&|#|$)"),
+				results = regex.exec(url);
+				if(!results) return null;
+				if(!results[2]) return '';
+				return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+
 		$(document).ready(function(){
-			$.ajax({
-				url:"/api/tweet",
-				method: "GET",
-				success: function(data){
-					// console.log(data);
-					$.each(data, function(key, value){
+			var query = getParameterByName('q')
+			console.log(query)
+			var tweetList = []
+			function parseTweet(){
+				if(tweetList == 0){
+					$("#tweet-container").append(
+							"<h4> No tweets found </h4>"
+						)
+				}
+				else{
+					$.each(tweetList, function(key, value){
 						var tweetContent = value.content;
 						var tweetUser = value.user;
 						var tweetKey = key;
@@ -20,6 +37,18 @@
 							"<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br>" + tweetUser.username + " | <a href=\"#\">View</a>" + "</div></div>"
 							)
 					})
+				}
+			}
+			$.ajax({
+				url:"/api/tweet",
+				data: {
+					'q':query
+				},
+				method: "GET",
+				success: function(data){
+					// console.log("data " + data);
+					tweetList = data
+					parseTweet()
 				},
 				error : function(data){
 					console.log("Error");
@@ -47,30 +76,6 @@
 			<div id="tweet-container">
 		
 			</div>
-			<hr>
-			{% for obj in object_list %}
-				<div class="media">
-					<div class="media-left">
-						<a href="">
-							{% if obj.image %}
-								<img class="media-object"src="" alt="...">
-							{% endif %}
-						</a>
-					</div>
-					<div class="media-body">
-						<a href="{% url 'tweet:detail' pk=obj.id %}">{{ obj.content }}</a>
-						<br>
-						by {{obj.user}} | {{obj.timestamp | timesince}} ago
-					</div>
-				</div>
-				<hr>
-			{% empty %}
-				{% if request.GET.q %}
-					<p>No tweets found</p>
-				{% else %}
-					<p>No tweets yet</p>
-				{% endif %}
-			{% endfor %}
 		</div>
 	</div>
 {% endblock content %}
