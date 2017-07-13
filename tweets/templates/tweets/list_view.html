@@ -29,12 +29,13 @@
 					$.each(tweetList, function(key, value){
 						var tweetContent = value.content;
 						var tweetUser = value.user;
+						var dateDisplay = value.date_display
 						var tweetKey = key;
 						// console.log(key);
 						// console.log(value.user.username);
 						// console.log(value.content);
 						$("#tweet-container").append(
-							"<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br>" + tweetUser.username + " | <a href=\"#\">View</a>" + "</div></div>"
+							"<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br>" + "by " + tweetUser.username + " | " + dateDisplay + " | " + "<a href=\"#\">View</a>" + "</div></div>"
 							)
 					})
 				}
