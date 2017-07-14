@@ -71,27 +71,57 @@
 			}
 
 			fetchTweet()
+			var charStart = 140;
+			var charCurrent = 0;
+			$("#tweet-form").append("<span id=\"charLeft\">" + charStart +"</span>")
 
+			$("#tweet-form textarea").keyup(function(event){
+				// console.log(event)
+				var this_ = $(this);
+				// console.log(this_.val().length)
+				charCurrent = (charStart - this_.val().length);
+				charLeft = $("#charLeft");
+				charLeft.text(charCurrent);
+
+				if(charCurrent > 0){
+					charLeft.removeClass("redChar");
+					charLeft.removeClass("grayChar");
+				}
+				else if(charCurrent == 0){
+					charLeft.removeClass("redChar");
+					charLeft.addClass("grayChar");
+				}
+				else{
+					charLeft.removeClass("grayChar");
+					charLeft.addClass("redChar");
+				}
+			});
 			$("#tweet-form").submit(function(event){
 				event.preventDefault();
 				var this_ = $(this);
 				var formData = this_.serialize();
-				$.ajax({
-						url:"/api/tweet/create/",
-						data: formData,
-						method: "POST",
-						success: function(data){
-							this_.find("input[type=text], textarea").val("");
-							console.log(data);
-							attachTweet(data, true);
-						},
-						error : function(data){
-							console.log("Error");
-							console.log(data);
-							console.log(data.status);
-							console.log(data.statusText);
-						}
-				})
+				if(charCurrent >= 0){
+					$.ajax({
+							url:"/api/tweet/create/",
+							data: formData,
+							method: "POST",
+							success: function(data){
+								this_.find("input[type=text], textarea").val("");
+								console.log(data);
+								attachTweet(data, true);
+							},
+							error : function(data){
+								console.log("Error");
+								console.log(data);
+								console.log(data.status);
+								console.log(data.statusText);
+							}
+					})
+				}
+				else{
+					console.log("Maximum character limit exceed")
+				}
+		
 				// console.log("formdata : " + formData);
 				// fetchTweet()
 			})

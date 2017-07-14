@@ -1,1 +1,9 @@
 /*Your custom css*/
+
+.redChar {
+	color : red;
+}
+
+.grayChar {
+	color: #ccc;
+}
