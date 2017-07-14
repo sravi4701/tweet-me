@@ -17,3 +17,6 @@ class Tweet(models.Model):
 
 	def get_absolute_url(self, *args, **kwargs):
 		return reverse("tweet:detail", kwargs={"pk":self.pk})
+
+	class Meta:
+		ordering = ['-timestamp', 'content']
