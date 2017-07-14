@@ -19,6 +19,7 @@
 			var query = getParameterByName('q')
 			console.log(query)
 			var tweetList = []
+			var nextTweetUrl;
 
 			function attachTweet(tweetValue, prepend){
 						var tweetContent = tweetValue.content;
@@ -50,17 +51,29 @@
 				}
 			}
 
-			function fetchTweet(){
+			function fetchTweet(url){
 				console.log("fetching...")
+				var fetchUrl;
+				if(!url){
+					fetchUrl = "/api/tweet";
+				}
+				else{
+					fetchUrl = url;
+				}
 				$.ajax({
-						url:"/api/tweet",
+						url:fetchUrl,
 						data: {
 							'q':query
 						},
 						method: "GET",
 						success: function(data){
 							// console.log("data " + data);
-							tweetList = data
+							tweetList = data.results;
+							nextTweetUrl = data.next;
+							// console.log(nextTweetUrl);
+							if(nextTweetUrl == null){
+								$("#loadmore").css("display", "none")
+							}
 							parseTweet()
 						},
 						error : function(data){
@@ -71,6 +84,9 @@
 			}
 
 			fetchTweet()
+
+
+
 			var charStart = 140;
 			var charCurrent = 0;
 			$("#tweet-form").append("<span id=\"charLeft\">" + charStart +"</span>")
@@ -125,7 +141,12 @@
 				// console.log("formdata : " + formData);
 				// fetchTweet()
 			})
-
+			$("#loadmore").click(function(event){
+				event.preventDefault()
+				if(nextTweetUrl){
+					fetchTweet(nextTweetUrl);
+				}
+			})
 		});
 
 	</script>
@@ -146,6 +167,7 @@
 			<div id="tweet-container">
 		
 			</div>
+			<a href="#" id="loadmore">Load More</a>
 		</div>
 	</div>
 {% endblock content %}
