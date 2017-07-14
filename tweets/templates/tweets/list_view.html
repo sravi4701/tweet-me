@@ -19,6 +19,23 @@
 			var query = getParameterByName('q')
 			console.log(query)
 			var tweetList = []
+
+			function attachTweet(tweetValue, prepend){
+						var tweetContent = tweetValue.content;
+						var tweetUser = tweetValue.user;
+						var dateDisplay = tweetValue.date_display
+						var tweetHtml = "<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br>" + "by " + tweetUser.username + " | " + dateDisplay + " | " + "<a href=\"#\">View</a>" + "</div></div>"
+						// console.log(key);
+						// console.log(value.user.username);
+						// console.log(value.content);
+						if(prepend){
+							$("#tweet-container").prepend(tweetHtml)
+						}
+						else{
+							$("#tweet-container").append(tweetHtml)
+						}
+			}
+
 			function parseTweet(){
 				if(tweetList == 0){
 					$("#tweet-container").append(
@@ -27,16 +44,8 @@
 				}
 				else{
 					$.each(tweetList, function(key, value){
-						var tweetContent = value.content;
-						var tweetUser = value.user;
-						var dateDisplay = value.date_display
 						var tweetKey = key;
-						// console.log(key);
-						// console.log(value.user.username);
-						// console.log(value.content);
-						$("#tweet-container").append(
-							"<div class=\"media\"><div class=\"media-body\">" + tweetContent + "<br>" + "by " + tweetUser.username + " | " + dateDisplay + " | " + "<a href=\"#\">View</a>" + "</div></div>"
-							)
+						attachTweet(value);
 					})
 				}
 			}
@@ -72,8 +81,9 @@
 						data: formData,
 						method: "POST",
 						success: function(data){
+							this_.find("input[type=text], textarea").val("");
 							console.log(data);
-							fetchTweet()
+							attachTweet(data, true);
 						},
 						error : function(data){
 							console.log("Error");
