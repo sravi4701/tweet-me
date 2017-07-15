@@ -8,7 +8,8 @@
     		<div class="col-sm-3 col-xs-12" >
     			<h1>{{ object.username }}</h1>
     			<p>Follower : {{ object.followed_by.all.count }}</p>
-    			<p><a href="{% url 'account:follow' username=object.username %}" class="btn btn-link">Follow</a></p>
+    			<p><a href="{{ object.profile.get_follow_url }}" class="btn btn-link">
+    			{% if following %}Un Follow {% else %} Follow {% endif %}</a></p>
     		</div>
     		<div class="col-sm-9 col-xs-12">
     			<h1>Tweets</h1>
