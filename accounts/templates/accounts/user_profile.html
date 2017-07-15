@@ -7,7 +7,7 @@
     	<div class="row">
     		<div class="col-sm-3 col-xs-12" style="background-color: red;">
     			<h1>{{ object.username }}</h1>
-    			<p>Follower : {{ object.followed_by.count }}</p>
+    			<p>Follower : {{ object.followed_by.all.count }}</p>
     		</div>
     		<div class="col-sm-9 col-xs-12">
     			<h1>Tweets</h1>
@@ -15,16 +15,16 @@
     				<h1>{{ tweet.content }}</h1><br>
     			{% endfor %}
 
-    			<h1>Following</h1>
-    			{% for user in object.profile.following.all %}
-    				<p>{{ user.username }}</p><br>
+    			<h1>Following <small>{{ object.profile.get_following.count }}</small></h1>
+    			{% for user in object.profile.get_following %}
+    				<a href="/profile/{{ user.username }}"><p>{{ user.username }}</p></a><br>
     			{% empty %}
     				<p>No following</p>
     			{% endfor %}
 
     			<h1>Follower</h1>
     			{% for profile in object.followed_by.all %}
-    				<p>{{ profile.user.username }}</p><br>
+    				<a href="/profile/{{ profile.user.username }}"><p>{{ profile.user.username }}</p></a><br>
   
     			{% empty %}
     				<p>No follower</p>
