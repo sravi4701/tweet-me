@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django import forms
 from django.forms.utils import ErrorList
@@ -7,7 +7,18 @@ from .forms import TweetModelForm
 from .mixins import FormUserRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.views import View
+from django.http import HttpResponseRedirect
 
+
+class RetweetView(View):
+	def get(self, request, pk, *args, **kwargs):
+		tweet = get_object_or_404(Tweet, pk=pk)
+		if request.user.is_authenticated():
+			new_tweet = Tweet.objects.retweet(request.user, tweet)
+			return HttpResponseRedirect("/")
+		else:
+			return HttpResponseRedirect(tweet.get_absolute_url())
 
 class TweetDeleteView(DeleteView, LoginRequiredMixin):
 	model = Tweet

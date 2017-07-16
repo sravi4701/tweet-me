@@ -12,11 +12,11 @@ class TweetModelForm(forms.ModelForm):
 		model = Tweet
 
 		fields = [
-			"user",
+			# "user",
 			"content"
 		]
 
-		#exclude = []
+		# exclude = ["user"]
 
 	#Override the validation
 	# def clean_content(self, *args, **kwargs):

@@ -10,8 +10,12 @@ from .forms import TweetModelForm
 
 class TweetModelAdmin(admin.ModelAdmin):
 	form = TweetModelForm
-	class Meta:
-		model = Tweet
+	# class Meta:
+	# 	model = Tweet
+	# 	fields = [
+	# 		'user',
+	# 		'content'
+	# 	]
 
 admin.site.register(Tweet, TweetModelAdmin)
 

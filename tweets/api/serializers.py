@@ -9,6 +9,7 @@ class TweetModelSerializer(serializers.ModelSerializer):
 	user = UserDisplaySerializer(read_only=True)
 	date_display = serializers.SerializerMethodField()
 	timesince = serializers.SerializerMethodField()
+	is_retweet = serializers.SerializerMethodField()
 	class Meta:
 		model = Tweet
 		fields = [
@@ -17,7 +18,14 @@ class TweetModelSerializer(serializers.ModelSerializer):
 			'timestamp',
 			'date_display',
 			'timesince',
+			'id',
+			'is_retweet',
 		]
+
+	def get_is_retweet(self, obj):
+		if obj.parent:
+			return True
+		return False
 
 	def get_date_display(self, obj):
 		return obj.timestamp.strftime("%b %d, %Y %I:%M %p")
