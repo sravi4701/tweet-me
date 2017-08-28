@@ -8,7 +8,6 @@ class TweetManager(models.Manager):
 	def retweet(self, user, parent_obj):
 		if parent_obj.parent:
 			og_parent = parent_obj.parent
-
 		else:
 			og_parent = parent_obj
 
